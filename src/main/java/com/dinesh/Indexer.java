@@ -24,7 +24,7 @@ public class Indexer {
         FSDirectory dir = FSDirectory.open(Paths.get(indexDir));
         StandardAnalyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
-        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE); // If you want to freshly index the files keep this line, else can remove
         writer = new IndexWriter(dir, config);
     }
 
