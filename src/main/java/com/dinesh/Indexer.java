@@ -16,22 +16,19 @@ import java.nio.file.Paths;
 
 public class Indexer {
 
-    // Lucene writer responsible for indexing documents
+
     private IndexWriter writer;
 
     // Initialize index writer with standard analyzer
     public Indexer(String indexDir) throws IOException {
         FSDirectory dir = FSDirectory.open(Paths.get(indexDir));
         StandardAnalyzer analyzer = new StandardAnalyzer();
-
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
-        // Create a fresh index (change mode if appending is required)
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
         writer = new IndexWriter(dir, config);
     }
 
-    // Close writer and release resources
+
     public void close() throws IOException {
         writer.close();
     }
@@ -39,13 +36,11 @@ public class Indexer {
     // Index a single text file
     public void indexFile(Path filePath) throws IOException {
         String content = Files.readString(filePath);
-
-        Document doc = new Document();
-        // Store file path for reference
-        doc.add(new StringField("path", filePath.toString(), Field.Store.YES));
-        // Index file content for search
+        
+        Document doc = new Document()
+        doc.add(new StringField("path", filePath.toString(), Field.Store.YES))
         doc.add(new TextField("content", content, Field.Store.YES));
-
+        
         writer.addDocument(doc);
         System.out.println("Indexed: " + filePath.getFileName());
     }
